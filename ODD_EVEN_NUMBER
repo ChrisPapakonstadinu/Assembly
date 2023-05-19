@@ -1,0 +1,66 @@
+TITLE ODD_EVEN_NUMBER
+ CODE SEGMENT
+    ASSUME CS:CODE DS:DATA
+      
+      START:
+       
+       MOV AX , DATA
+       MOV DS , AX 
+   
+AGAIN :
+       LEA DX , MESSAGE
+       MOV AH , 9
+       INT 21H     
+       
+       MOV AH , 8
+       INT 21H  
+       MOV BL ,AL
+       
+       CMP BL ,HI
+       JA AGAIN
+       
+       CMP BL ,LO
+       JBE AGAIN 
+       
+       CMP BL ,ZERO
+       JBE AGAIN
+       
+       MOV DL , BL 
+       MOV AH , 2
+       INT 21H
+       
+       MOV AH , 00
+       MOV AL , DL
+       DIV X
+       CMP AH , ONE 
+       JNE EVEN
+          
+
+ODD:   
+       LEA DX , ODDM 
+       MOV AH , 9
+       INT 21H 
+       JMP NEXT
+
+EVEN:    
+       LEA DX , EVENM 
+       MOV AH , 9
+       INT 21H        
+               
+NEXT:   
+       MOV AH , 4CH
+       INT 21H 
+                    
+               
+    CODE ENDS 
+ DATA SEGMENT 
+             MESSAGE DB 'GIVE ONE DIGIT NUMBER 1-9 $' 
+             ODDM DB 010,013,'THE NUMBER IS ODD$' 
+             EVENM DB 010,013,'THE NUMBER IS EVEN$' 
+             HI DB 58
+             LO DB 47 
+             X DB 2
+             ONE DB 1
+             ZERO DB 0
+    DATA ENDS 
+ END START
